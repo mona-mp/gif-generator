@@ -1,2 +1,3 @@
 venv/
 .vscode
+video_to_gif/__pycache__
