@@ -1,41 +1,41 @@
 import logging
-import ffmpeg
-
-# Resizing
 
 
 def get_dimensions():
-    try:
-        width, height = map(int, input(
-            "Enter desired output dimensions (width x height, e.g., 1280x720): ").split('x'))
-        return width, height
-    except ValueError:
-        logging.error(
-            "Invalid dimensions provided. Please use the format: widthxheight.")
-        return None, None
-
-# Frame rate
+    while True:  # Loop until a valid input is provided
+        dimensions = input(
+            "Enter desired dimensions (width x height, e.g., 1280x720): ")
+        try:
+            width, height = map(int, dimensions.split('x'))
+            return width, height
+        except ValueError:
+            logging.error(
+                f"Invalid dimensions: {dimensions}. Please use the format width x height, e.g., 1280x720.")
 
 
 def get_fps():
-    try:
-        fps = int(input("Enter the desired frame rate (e.g., 24 for 24 FPS): "))
-        return fps
-    except ValueError:
-        logging.error(
-            "Invalid frame rate provided. Please enter an integer value.")
-        return None
-
-# Overlay Text
+    while True:  # Loop until a valid input is provided
+        fps_input = input("Enter desired frame rate (FPS) for the GIF: ")
+        try:
+            fps = int(fps_input)
+            if fps <= 0:
+                raise ValueError("FPS should be a positive integer.")
+            return fps
+        except ValueError:
+            logging.error(
+                f"Invalid FPS value: {fps_input}. Please enter a positive integer.")
 
 
 def get_overlay_text():
-    try:
-        add_text = input("Do you want to add text overlay? (yes/no): ").lower()
-        if add_text == 'yes':
-            text_content = input("Enter the text to overlay: ")
-            return text_content
-        return None
-    except Exception as e:
-        logging.error(f"Error getting overlay text: {e}")
-        return None
+    while True:  # Loop until a valid input is provided
+        answer = input(
+            "Would you like to overlay text on the GIF? (yes/no): ").lower()
+        if answer == 'yes':
+            text = input("Please enter the text you'd like to overlay: ")
+            if text:
+                return True, text
+            logging.error("Text cannot be empty. Please enter a valid text.")
+        elif answer == 'no':
+            return False, None
+        else:
+            logging.error("Invalid choice. Please enter 'yes' or 'no'.")
