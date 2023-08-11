@@ -12,14 +12,14 @@ file_path = input("Enter the path to the video file: ")
 # Validate the provided file path
 if is_valid_video(file_path):
     logging.info("Valid video!")
-    exit()
 
 # Get gif start time and duration from video
 start_time = float(input("Enter start time of the segment (in seconds): "))
 duration = float(input("Enter duration of the segment (in seconds): "))
 
-temp_video_path = "temp_video.mp4"
-extract_video_segment(file_path, start_time, duration, temp_video_path)
+output_segment_path = "temp_segment.mp4"
+
+extract_video_segment(file_path, start_time, duration, output_segment_path)
 
 # Get dimensions
 width, height = get_dimensions()
@@ -28,7 +28,8 @@ width, height = get_dimensions()
 fps = get_fps()
 
 # Adjust video dimensions and FPS
-adjust_video(temp_video_path, width, height, fps, temp_video_path)
+adjusted_video_path = "temp_adjusted.mp4"
+adjust_video(output_segment_path, width, height, fps, adjusted_video_path)
 
 #  Addoverlay text on the video
 overlay, text = get_overlay_text()
@@ -44,8 +45,8 @@ if overlay:
         if position not in valid_positions:
             logging.error(
                 f"Invalid position: {position}. Please select from the given choices.")
-    overlay_text(temp_video_path, text, position, temp_video_path)
+    overlay_text(adjusted_video_path, text, position, adjusted_video_path)
 
 # Convert to GIF
 output_gif_path = "output.gif"
-convert_to_gif(temp_video_path, output_gif_path)
+convert_to_gif(adjusted_video_path, output_gif_path)
